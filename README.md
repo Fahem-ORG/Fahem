@@ -100,7 +100,7 @@ Run the Backend in Dev Mode
 Navigate to the backend folder:
 
 ```sh
-cd backend
+cd apps/api
 ```
 Install Python dependencies:
 
@@ -113,6 +113,7 @@ poetry run python app.py
 ```
 
 Check the API
+
 Go to http://localhost:8000/docs/ to view the API documentation.
 
 Frontend Configuration
@@ -121,16 +122,16 @@ Navigate to the frontend folder:
 
 
 ```sh
-cd frontend
+cd apps/web
 ```
 This will install all the dependencies needed for the frontend. You will need pnpm for this step.
 
 ```sh
-pnpm install
+pnpm i
 ```
 Add an .env file in the frontend folder with the following content:
 ```sh
-env
+apps/web/.env
 
 NEXT_PUBLIC_FAHEM_MULTI_ORG=false
 NEXT_PUBLIC_FAHEM_DEFAULT_ORG=default
@@ -147,7 +148,7 @@ pnpm run dev
 Configure Your Organization as the Default One
 Copy this content to the .env file in the frontend folder:
 ```sh
-env
+apps/web/.env
 
 NEXT_PUBLIC_FAHEM_MULTI_ORG=false
 NEXT_PUBLIC_FAHEM_DEFAULT_ORG=default
