@@ -23,10 +23,6 @@ Fahem is an interactive platform that makes it easy for anyone to provide world-
 - 👪 Multiplayer Course edition
 - More to come
 
-## Documentation
-
-Detailed documentation for Fahem can be found [here](https://docs.fahem.app/).
-
 ## Get Started
 
 ### Get a Local Ready Copy of Fahem
@@ -62,14 +58,6 @@ Fahem uses a number of open-source projects to work properly:
 - **React** - duh
 
 
-## A Word
-
-Fahem is made with 💜. From the UI to the features, it is carefully designed to make students' and teachers' lives easier and make education software more enjoyable.
-
-Thank you and have fun using Fahem!
-
----
-
 ## Dev Environment
 
 ### Setting Up a Dev Environment
@@ -92,12 +80,15 @@ This guide will help you set up a development environment for Fahem, guiding you
 ```sh
 git clone https://github.com/Fahem-ORG/Fahem.git
 cd fahem
+```
 Build & Install Fahem
 This will build and run the backend and the database Docker images.
 
 
-
+```sh
 docker-compose up -d
+```
+
 This setup includes:
 
 A Postgres database
@@ -108,20 +99,21 @@ Note: The built Fahem App is not needed for the development environment; it is u
 Run the Backend in Dev Mode
 Navigate to the backend folder:
 
-
-cd backend
+```sh
+cd apps/api
+```
 Install Python dependencies:
 
-
+```sh
 poetry install
+```
 Run the backend in development mode:
-
-
-
-poetry run uvicorn app.main:app --reload
-To learn more about configuration options, please refer to the Configuration documentation.
+```sh
+poetry run python app.py
+```
 
 Check the API
+
 Go to http://localhost:8000/docs/ to view the API documentation.
 
 Frontend Configuration
@@ -129,30 +121,34 @@ Initialize the Frontend
 Navigate to the frontend folder:
 
 
-
-cd frontend
+```sh
+cd apps/web
+```
 This will install all the dependencies needed for the frontend. You will need pnpm for this step.
 
-
-pnpm install
+```sh
+pnpm i
+```
 Add an .env file in the frontend folder with the following content:
-
-env
+```sh
+apps/web/.env
 
 NEXT_PUBLIC_FAHEM_MULTI_ORG=false
-NEXT_PUBLIC_FAHEM_DEFAULT_ORG=test
+NEXT_PUBLIC_FAHEM_DEFAULT_ORG=default
 NEXT_PUBLIC_FAHEM_API_URL=http://localhost:8000/api/v1/
 NEXT_PUBLIC_FAHEM_BACKEND_URL=http://localhost:8000/
 NEXT_PUBLIC_FAHEM_DOMAIN=localhost:3000
+```
 Note: Setting NEXT_PUBLIC_FAHEM_MULTI_ORG to true won't work locally for now; please set it to false. For more information about Organizations Hosting modes, refer to the Organization Hosting Modes documentation.
 
 Run the Dev Environment
-
+```sh
 pnpm run dev
+```
 Configure Your Organization as the Default One
 Copy this content to the .env file in the frontend folder:
-
-env
+```sh
+apps/web/.env
 
 NEXT_PUBLIC_FAHEM_MULTI_ORG=false
 NEXT_PUBLIC_FAHEM_DEFAULT_ORG=default
@@ -160,6 +156,7 @@ NEXT_PUBLIC_FAHEM_API_URL=http://localhost:8000/api/v1/
 NEXT_PUBLIC_FAHEM_BACKEND_URL=http://localhost:8000/
 NEXT_PUBLIC_FAHEM_DOMAIN=localhost:3000
 NEXT_PUBLIC_FAHEM_COLLABORATION_WS_URL=wss://localhost:1998
+```
 Make sure to change the NEXT_PUBLIC_FAHEM_DEFAULT_ORG to the organization you want to set as the default one. You'll find the organization slug in the database in the organizations table. Here, it is set to default, which is the default organization created by the backend when you ran it in the previous steps.
 
 Congratulations, you're done! 🎉
