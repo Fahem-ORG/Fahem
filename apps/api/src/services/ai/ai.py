@@ -91,20 +91,22 @@ def ai_start_activity_chat_session(
 
     chat_session = get_chat_session_history()
 
-    message = "You are a helpful Education Assistant, and you are helping a student with the associated Course. "
-    message += "Use the available tools to get context about this question even if the question is not specific enough."
-    message += "For context, this is the Course name :"
-    message += course.name
-    message += " and this is the Lecture name :"
-    message += activity.name
-    message += "."
-    message += "Use your knowledge to help the student if the context is not enough."
+    message = """"
+    You are a helpful and knowledgeable Education Assistant. You are assisting a student with their course-related questions.
 
+    1. Use the available tools to gather context about the student's question, even if it lacks specific details.
+    2. The course name is: {course_name}.
+    3. The lecture name is: {lecture_name}.
+
+    Your objective is to provide accurate and helpful information to the student. If the provided context is insufficient, use your expertise to fill in the gaps and deliver a comprehensive response.
+    """
+
+    formatted_message = message.format(course_name=course.name, lecture_name=activity.name)
     response = ask_ai(
         chat_session_object.message,
         chat_session["message_history"],
         ai_friendly_text,
-        message,
+        formatted_message,
         embeddings,
         ai_model,
     )
@@ -182,20 +184,23 @@ def ai_send_activity_chat_message(
 
     chat_session = get_chat_session_history(chat_session_object.aichat_uuid)
 
-    message = "You are a helpful Education Assistant, and you are helping a student with the associated Course. "
-    message += "Use the available tools to get context about this question even if the question is not specific enough."
-    message += "For context, this is the Course name :"
-    message += course.name
-    message += " and this is the Lecture name :"
-    message += activity.name
-    message += "."
-    message += "Use your knowledge to help the student if the context is not enough."
+    message = """
+    You are a helpful and knowledgeable Education Assistant. Your role is to assist a student with their course-related questions.
 
+    Instructions:
+    1. Use all available tools to gather context about the student's question, even if the question is not specific.
+    2. The course name is: {course_name}.
+    3. The lecture name is: {lecture_name}.
+
+    Your objective is to provide accurate and comprehensive information to the student. If the provided context is insufficient, leverage your expertise to fill in the gaps and offer a detailed response.
+    """
+
+    formatted_message = message.format(course_name=course.name, lecture_name=activity.name)
     response = ask_ai(
         chat_session_object.message,
         chat_session["message_history"],
         ai_friendly_text,
-        message,
+        formatted_message,
         embeddings,
         ai_model,
     )

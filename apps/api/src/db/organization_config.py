@@ -20,8 +20,8 @@ class AIEnabledFeatures(BaseModel):
 class AIConfig(BaseModel):
     enabled: bool = True
     limits: AILimitsSettings = AILimitsSettings()
-    embeddings: Literal["text-embedding-ada-002",] = "text-embedding-ada-002"
-    ai_model: Literal["gpt-3.5-turbo", "gpt-4-1106-preview"] = "gpt-3.5-turbo"
+    embeddings: Literal["text-embedding-004","text-embedding-001"] = "text-embedding-004"
+    ai_model: Literal["gemini-1.5-flash", "gemini-1.5-pro"] = "gemini-1.5-pro"
     features: AIEnabledFeatures = AIEnabledFeatures()
 
 

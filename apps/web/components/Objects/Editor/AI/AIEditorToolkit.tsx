@@ -109,7 +109,7 @@ function AIEditorToolkit(props: AIEditorToolkitProps) {
                         <AiEditorToolButton label="Writer" />
                         <AiEditorToolButton label="ContinueWriting" />
                         <AiEditorToolButton label="MakeLonger" />
-
+                        <AiEditorToolButton label="GenerateQuiz" />
                         <AiEditorToolButton label="Translate" />
                       </div>
                       <div className="flex space-x-2 items-center">
@@ -288,6 +288,15 @@ const UserFeedbackModal = (props: AIEditorToolkitProps) => {
         await dispatchAIEditor({ type: 'setIsNoLongerWaitingForResponse' })
       }
     } else if (label === 'GenerateQuiz') {
+      let ai_message = ''
+      let text_selection = getTipTapEditorSelectedText()
+      let prompt = getPrompt({ label: label, selection: text_selection })
+      if (prompt) {
+        await dispatchAIEditor({ type: 'setIsWaitingForResponse' })
+        ai_message = await sendReqWithMessage(prompt)
+        await replaceSelectedTextWithText(ai_message)
+        await dispatchAIEditor({ type: 'setIsNoLongerWaitingForResponse' })
+      }
       // will be implemented in future stages
     } else if (label === 'Translate') {
       let ai_message = ''
@@ -377,30 +386,28 @@ const UserFeedbackModal = (props: AIEditorToolkitProps) => {
     const { label, selection } = args
 
     if (label === 'Writer') {
-      return `Write 3 sentences about ${selection}`
+      return `Please write 3 informative and concise sentences about the following topic: ${selection}.`
     } else if (label === 'ContinueWriting') {
-      return `Continue writing 3 more sentences based on "${selection}"`
+      return `Please continue writing by adding 3 more sentences to the following text: "${selection}". Ensure the continuation flows naturally and maintains the context.`
     } else if (label === 'MakeLonger') {
-      return `Make longer this text longer : "${selection}"`
+      return `Please expand on the following text: "${selection}". Add additional details and examples to make it more comprehensive.`
     } else if (label === 'GenerateQuiz') {
-      return `Generate a quiz about "${selection}", only return an array of objects, every object should respect the following interface:
-            interface Answer {
-                answer_id: string;
-                answer: string;
-                correct: boolean;
-              }
-              interface Question {
-                question_id: string;
-                question: string;
-                type: "multiple_choice" 
-                answers: Answer[];
-              }
-            " `
+      return `Please generate a quiz based on the topic: "${selection}". The quiz should be an array of objects, each adhering to the following interface:
+      interface Answer {
+          answer_id: string;
+          answer: string;
+          correct: boolean;
+      }
+      interface Question {
+          question_id: string;
+          question: string;
+          type: "multiple_choice";
+          answers: Answer[];
+      }
+      Ensure the questions are clear and relevant to the topic, and that there is one correct answer per question.`
     } else if (label === 'Translate') {
       return (
-        `Translate "${selection}" to the ` +
-        aiEditorState.chatInputValue +
-        ` language`
+        `Please translate the following text to ${aiEditorState.chatInputValue}:\n\n"${selection}"`
       )
     }
   }
@@ -465,7 +472,7 @@ const UserFeedbackModal = (props: AIEditorToolkitProps) => {
               onKeyDown={handleKeyPress}
               value={aiEditorState.chatInputValue}
               onChange={handleChange}
-              placeholder="Ask AI"
+              placeholder="Ask me anything..."
               className="ring-1 ring-inset ring-white/20 w-full bg-gray-950/20 rounded-lg outline-none px-4 py-2 text-white text-sm placeholder:text-white/30"
             ></input>
             <div
@@ -607,6 +614,26 @@ const AiEditorActionScreen = ({
             </div>
           </div>
         )}
+        {aiEditorState.selectedTool === 'GenerateQuiz' &&
+          !aiEditorState.isWaitingForResponse &&
+          !aiEditorState.error.isError && (
+            <div className="flex flex-col mx-auto justify-center align-middle items-center">
+              <p className="mx-auto flex p-2 text-white/80 mt-4 font-bold justify-center text-sm align-middle">
+                Select text to generate a quiz
+              </p>
+              <div
+                onClick={() => {
+                  handleOperation(
+                    aiEditorState.selectedTool,
+                    aiEditorState.chatInputValue
+                  )
+                }}
+                className="flex cursor-pointer space-x-1.5 p-4 mt-4 items-center bg-white/10  rounded-md outline outline-1 outline-neutral-200/20 text-2xl font-semibold text-white/70 hover:bg-white/20 hover:outline-neutral-200/40 delay-75 ease-linear transition-all"
+              >
+                <HelpCircle size={24} />
+              </div>
+            </div>
+          )}
       {aiEditorState.selectedTool === 'Translate' &&
         !aiEditorState.isWaitingForResponse &&
         !aiEditorState.error.isError && (

@@ -15,7 +15,7 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain.agents.agent_toolkits import (
     create_retriever_tool,
 )
-
+from langchain_google_genai import GoogleGenerativeAIEmbeddings,ChatGoogleGenerativeAI
 import chromadb
 
 from config.config import get_fahem_config
@@ -37,11 +37,12 @@ def ask_ai(
     text_reference: str,
     message_for_the_prompt: str,
     embedding_model_name: str,
-    openai_model_name: str,
+    google_model_name: str,
 ):
     # Get API Keys
     LH_CONFIG = get_fahem_config()
-    openai_api_key = LH_CONFIG.ai_config.openai_api_key
+    google_api_key = LH_CONFIG.ai_config.google_api_key
+    openai_api_key = LH_CONFIG.ai_config.openai_api_key 
 
     # split it into chunks
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
@@ -50,6 +51,8 @@ def ask_ai(
 
     embedding_models = {
         "text-embedding-ada-002": OpenAIEmbeddings,
+        "models/text-embedding-004": GoogleGenerativeAIEmbeddings,
+        "models/text-embedding-001" : GoogleGenerativeAIEmbeddings
     }
 
     embedding_function = None
@@ -58,6 +61,14 @@ def ask_ai(
         if embedding_model_name == "text-embedding-ada-002":
             embedding_function = embedding_models[embedding_model_name](
                 model=embedding_model_name, api_key=openai_api_key
+            )
+        elif embedding_model_name == "models/text-embedding-004":
+            embedding_function = embedding_models[embedding_model_name](
+                model=embedding_model_name, api_key=google_api_key
+            )
+        elif embedding_model_name == "models/text-embedding-001":
+            embedding_function = embedding_models[embedding_model_name](
+                model=embedding_model_name, api_key=google_api_key
             )
     else:
         raise Exception("Embedding model not found")
@@ -71,8 +82,8 @@ def ask_ai(
     )
     tools = [tool]
 
-    llm = ChatOpenAI(
-        temperature=0, api_key=openai_api_key, model_name=openai_model_name
+    llm = ChatGoogleGenerativeAI(
+        temperature=0.7, google_api_key=google_api_key, model=google_model_name ,convert_system_message_to_human=True
     )
 
     memory_key = "history"

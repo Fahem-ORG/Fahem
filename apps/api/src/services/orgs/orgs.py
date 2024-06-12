@@ -170,8 +170,8 @@ async def create_org(
                 limits_enabled=False,
                 max_asks=0,
             ),
-            embeddings="text-embedding-ada-002",
-            ai_model="gpt-3.5-turbo",
+            embeddings="models/text-embedding-004",
+            ai_model="gemini-1.5-pro",
             features=AIEnabledFeatures(
                 editor=False,
                 activity_ask=False,
