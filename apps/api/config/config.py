@@ -31,7 +31,6 @@ class ChromaDBConfig(BaseModel):
 
 class AIConfig(BaseModel):
     google_api_key: str | None
-    openai_api_key: str | None
     is_ai_enabled: bool | None
     chromadb_config: ChromaDBConfig | None
 
@@ -201,15 +200,12 @@ def get_fahem_config() -> FahemLmsConfig:
     ).get("sql_connection_string")
 
     # AI Config
-    env_openai_api_key = os.environ.get("FAHEM_OPENAI_API_KEY")
     env_google_api_key = os.environ.get("FAHEM_GOOGLE_API_KEY")
     env_is_ai_enabled = os.environ.get("FAHEM_IS_AI_ENABLED")
     env_chromadb_separate = os.environ.get("FAHEM_CHROMADB_SEPARATE")
     env_chromadb_host = os.environ.get("FAHEM_CHROMADB_HOST")
 
-    openai_api_key = env_openai_api_key or yaml_config.get("ai_config", {}).get(
-        "openai_api_key"
-    )
+
     google_api_key = env_google_api_key or yaml_config.get("ai_config", {}).get(
         "google_api_key"
     )
