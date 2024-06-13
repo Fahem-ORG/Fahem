@@ -38,7 +38,7 @@ redis_config:
   redis_connection_string: redis://localhost:6379/fahem
 
 ai_config:
-  google_api_key : "AIzaSyBn9URMDZDje9nuimn-juKSrWYg-SezkU4"
+  google_api_key : ""
   is_ai_enabled: true  
   chromadb_config:
     isSeparateDatabaseEnabled: True
