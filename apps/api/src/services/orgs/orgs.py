@@ -171,7 +171,7 @@ async def create_org(
                 max_asks=0,
             ),
             embeddings="models/text-embedding-004",
-            ai_model="gemini-1.5-pro",
+            ai_model="gemini-1.5-flash",
             features=AIEnabledFeatures(
                 editor=False,
                 activity_ask=False,

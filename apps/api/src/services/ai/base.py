@@ -10,8 +10,7 @@ from langchain_core.messages import SystemMessage
 from langchain.agents.openai_functions_agent.agent_token_buffer_memory import (
     AgentTokenBufferMemory,
 )
-from langchain_openai import OpenAIEmbeddings
-from langchain_community.chat_models import ChatOpenAI
+
 from langchain.agents.agent_toolkits import (
     create_retriever_tool,
 )
@@ -42,7 +41,6 @@ def ask_ai(
     # Get API Keys
     LH_CONFIG = get_fahem_config()
     google_api_key = LH_CONFIG.ai_config.google_api_key
-    openai_api_key = LH_CONFIG.ai_config.openai_api_key 
 
     # split it into chunks
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
@@ -50,7 +48,6 @@ def ask_ai(
     texts = text_splitter.split_documents(documents)
 
     embedding_models = {
-        "text-embedding-ada-002": OpenAIEmbeddings,
         "models/text-embedding-004": GoogleGenerativeAIEmbeddings,
         "models/text-embedding-001" : GoogleGenerativeAIEmbeddings
     }
@@ -58,11 +55,7 @@ def ask_ai(
     embedding_function = None
 
     if embedding_model_name in embedding_models:
-        if embedding_model_name == "text-embedding-ada-002":
-            embedding_function = embedding_models[embedding_model_name](
-                model=embedding_model_name, api_key=openai_api_key
-            )
-        elif embedding_model_name == "models/text-embedding-004":
+        if embedding_model_name == "models/text-embedding-004":
             embedding_function = embedding_models[embedding_model_name](
                 model=embedding_model_name, api_key=google_api_key
             )
