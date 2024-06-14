@@ -17,7 +17,7 @@ import {
   ImagePlus,
   Sigma,
   Video,
-  Youtube,
+  Youtube, Table, Plus
 } from 'lucide-react'
 import ToolTip from '@components/StyledElements/Tooltip/Tooltip'
 
@@ -38,6 +38,28 @@ export const ToolbarButtons = ({ editor, props }: any) => {
       })
     }
   }
+
+     // Dynamic Table Extension
+     const addDynamicTable = () => {
+      const rows = parseInt(prompt('Enter number of rows:'));
+      const cols = parseInt(prompt('Enter number of columns:'));
+  
+      if (!isNaN(rows) && !isNaN(cols) && rows > 0 && cols > 0) {
+        editor.commands.insertTable({ rows, cols, withHeaderRow: true });
+     // insertTable(rows, cols);
+
+      }
+    };
+
+    // Dynamic new column
+    const addColumn = () => {
+      editor.chain().focus().addColumnAfter().run();
+    };
+
+    //add new row
+    const addRow = () => {
+      editor.chain().focus().addRowAfter().run();
+    };
 
   return (
     <ToolButtonsWrapper>
@@ -142,6 +164,28 @@ export const ToolbarButtons = ({ editor, props }: any) => {
           <Youtube size={15} />
         </ToolBtn>
       </ToolTip>
+
+      <ToolTip content={'add a dynamic table'}>
+          <ToolBtn onClick={() => addDynamicTable()}>
+            <Table size={15} />
+          </ToolBtn>
+        </ToolTip>
+
+        <ToolTip content={'add a new column to the table'}>
+          <ToolBtn onClick={() => addColumn()}>
+            <Plus size={15} />
+          </ToolBtn>
+        </ToolTip>
+
+        <ToolTip content={'add a new row to the table'}>
+          <ToolBtn onClick={() => addRow()}>
+            <Plus size={15} />
+          </ToolBtn>
+        </ToolTip>
+
+
+
+
       <ToolTip content={'Math Equation (LaTeX)'}>
         <ToolBtn
           onClick={() =>

@@ -10,7 +10,10 @@ import VideoBlock from '@components/Objects/Editor/Extensions/Video/VideoBlock'
 import MathEquationBlock from '@components/Objects/Editor/Extensions/MathEquation/MathEquationBlock'
 import PDFBlock from '@components/Objects/Editor/Extensions/PDF/PDFBlock'
 import QuizBlock from '@components/Objects/Editor/Extensions/Quiz/QuizBlock'
-
+import Table from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
 // Lowlight
 import { common, createLowlight } from 'lowlight'
 const lowlight = createLowlight(common)
@@ -84,6 +87,25 @@ function Canva(props: Editor) {
       }),
       CodeBlockLowlight.configure({
         lowlight,
+      }),
+      Table.configure({
+        HTMLAttributes: {
+          class: 'my-custom-class',
+        },
+        editable: true,
+        activity: props.activity, 
+      }),
+      TableRow.configure({
+        editable: true,
+        activity: props.activity, 
+      }),
+      TableCell.configure({
+        editable: true,
+        activity: props.activity, 
+      }),
+      TableHeader.configure({
+        editable: true,
+        activity: props.activity, 
       }),
     ],
 
@@ -245,6 +267,94 @@ const CanvaWrapper = styled.div`
       }
     }
   }
+
+
+
+
+
+  
+
+  margin: 40px;
+  margin-top: 90px;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 300;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.03);
+
+  .ProseMirror {
+    h1 {
+      font-size: 30px;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 25px;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    h5 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+
+    &:focus {
+      outline: none !important;
+      outline-style: none !important;
+      box-shadow: none !important;
+    }
+
+    // Styles pour les tableaux
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
 `
 
 export default Canva
